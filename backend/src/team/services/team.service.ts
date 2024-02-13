@@ -16,16 +16,7 @@ export class TeamService {
   }
 
   getAll() {
-    return this.prismaService.team.findMany({
-      include: {
-        players: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-    });
+    return this.prismaService.team.findMany();
   }
 
   async getOne(id: number) {
@@ -55,14 +46,19 @@ export class TeamService {
       },
     });
   }
-
   async remove(id: number) {
-    const team = await this.prismaService.team.findUnique({
-      where: { id },
+    // Verifique se o time tem jogadores associados
+    const players = await this.prismaService.player.findMany({
+      where: { teamId: id },
     });
 
-    if (!team) throw new BadRequestException('Team not found');
+    if (players.length > 0) {
+      throw new BadRequestException(
+        'This team has associated players and cannot be deleted',
+      );
+    }
 
+    // Se não tiver jogadores associados, prossiga com a exclusão
     return this.prismaService.team.delete({
       where: { id },
     });
