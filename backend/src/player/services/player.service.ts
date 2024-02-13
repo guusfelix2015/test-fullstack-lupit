@@ -17,7 +17,13 @@ export class PlayerService {
   }
 
   getAll() {
-    return this.prismaService.player.findMany();
+    return this.prismaService.player.findMany({
+      include: {
+        team: {
+          select: { name: true, id: true },
+        },
+      },
+    });
   }
 
   async getOne(id: string) {
@@ -49,7 +55,7 @@ export class PlayerService {
       where: { id },
     });
 
-    if (!player) throw new BadRequestException('Player not found');
+    if (!player.id) throw new BadRequestException('Player not found');
 
     return this.prismaService.player.delete({
       where: { id },
