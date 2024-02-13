@@ -13,11 +13,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Plus, ShieldHalf, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { Team } from "../types/team";
 import Link from "next/link";
 import { toast, Toaster } from "sonner";
-import { LoadingIndicator } from "@/components/loading-indicator";
 
 const getTeams = async (): Promise<Team[]> => {
   const response = await fetch("http://localhost:3000/team");
@@ -73,7 +72,7 @@ export default function Teams() {
 
         {teams.length === 0 ? (
           <div className="flex items-center justify-center">
-            <LoadingIndicator className="w-10 h-10" />
+            <h1>Nenhum time cadastrado</h1>
           </div>
         ) : (
           <Table className="border">
@@ -93,7 +92,7 @@ export default function Teams() {
                   <TableCell>
                     <div className="flex">
                       <Button variant="ghost" asChild>
-                        <Link href={`/teams/edit/${team.id}`} passHref>
+                        <Link href={`/teams/${team.id}`} passHref>
                           <Pencil className="w-4 h-4" />
                         </Link>
                       </Button>

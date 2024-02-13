@@ -1,7 +1,7 @@
 import { PrismaService } from '@/prisma';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePlayerDto } from '../dto/create-player.dto';
-import { UpdatePlayerDto, updatePlayerDto } from '../dto/update-player.dto';
+import { UpdatePlayerDto } from '../dto/update-player.dto';
 
 @Injectable()
 export class PlayerService {
@@ -42,11 +42,9 @@ export class PlayerService {
     });
 
     if (!player) throw new BadRequestException('Player not found');
-
-    const payload = updatePlayerDto.parse(data);
     return this.prismaService.player.update({
       where: { id },
-      data: payload,
+      data,
     });
   }
 

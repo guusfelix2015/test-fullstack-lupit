@@ -25,7 +25,7 @@ export const schema = z.object({
   name: z
     .string({ required_error: "Informe o nome do time" })
     .min(3, "Nome do time deve conter no mínimo 3 caracteres"),
-  teamId: z.number(),
+  teamId: z.number().nullable(),
 });
 
 type FormSchema = z.infer<typeof schema>;
@@ -110,28 +110,32 @@ export default function EditPlayer({
               />
               <FormError errors={errors} fieldName="name" />
             </div>
-            <Controller
-              name="teamId"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  value={field.value ? field.value.toString() : ""}
-                >
-                  <SelectTrigger className="full">
-                    <SelectValue placeholder="Selecione um time" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {teams.map((team) => (
-                      <SelectItem key={team.id} value={team.id.toString()}>
-                        {team.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
+            {teams.length === 0 ? (
+              <h1>Esse jogador não tem time associado</h1>
+            ) : (
+              <Controller
+                name="teamId"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={(value) => field.onChange(Number(value))}
+                    value={field.value ? field.value.toString() : ""}
+                  >
+                    <SelectTrigger className="full">
+                      <SelectValue placeholder="Selecione um time" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {teams.map((team) => (
+                        <SelectItem key={team.id} value={team.id.toString()}>
+                          {team.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            )}
 
             <FormError errors={errors} fieldName="teamId" />
             <div className="flex items-end w-full justify-end">

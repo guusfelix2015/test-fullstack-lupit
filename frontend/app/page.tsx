@@ -16,7 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Pencil, Plus, Trash2, UserRoundX } from "lucide-react";
 import Link from "next/link";
-import { LoadingIndicator } from "@/components/loading-indicator";
 
 const getPlayers = async (): Promise<Player[]> => {
   const response = await fetch("http://localhost:3000/player");
@@ -60,7 +59,7 @@ export default function Home() {
         </div>
         {players.length === 0 ? (
           <div className="flex items-center justify-center">
-            <LoadingIndicator className="w-10 h-10" />
+            <h1>Nenhum jogador cadastrado</h1>
           </div>
         ) : (
           <Table className="border">
@@ -78,7 +77,7 @@ export default function Home() {
                 <TableRow key={player.id}>
                   <TableCell>{player.id}</TableCell>
                   <TableCell>{player.name}</TableCell>
-                  <TableCell>{player.team.name}</TableCell>
+                  <TableCell>{player?.team?.name ?? "Sem time"}</TableCell>
                   <div className="flex">
                     <Button asChild variant="ghost">
                       <Link href={`/player/${player.id}`} passHref>
