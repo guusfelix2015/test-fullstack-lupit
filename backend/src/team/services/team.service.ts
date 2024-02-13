@@ -47,18 +47,11 @@ export class TeamService {
     });
   }
   async remove(id: number) {
-    // Verifique se o time tem jogadores associados
-    const players = await this.prismaService.player.findMany({
+    await this.prismaService.player.updateMany({
       where: { teamId: id },
+      data: { teamId: null },
     });
 
-    if (players.length > 0) {
-      throw new BadRequestException(
-        'This team has associated players and cannot be deleted',
-      );
-    }
-
-    // Se não tiver jogadores associados, prossiga com a exclusão
     return this.prismaService.team.delete({
       where: { id },
     });

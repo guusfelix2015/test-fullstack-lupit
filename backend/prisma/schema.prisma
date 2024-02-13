@@ -20,12 +20,12 @@ model Team {
 }
 
 model Player {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  teamId    Int
-  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    Int?
+  team      Team?    @relation(fields: [teamId], references: [id])
 
   @@map("players")
 }
