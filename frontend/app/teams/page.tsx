@@ -13,10 +13,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, ShieldHalf, Trash2 } from "lucide-react";
 import { Team } from "../types/team";
 import Link from "next/link";
 import { toast, Toaster } from "sonner";
+import { LoadingIndicator } from "@/components/loading-indicator";
 
 const getTeams = async (): Promise<Team[]> => {
   const response = await fetch("http://localhost:3000/team");
@@ -61,7 +62,7 @@ export default function Teams() {
       <Header />
       <div className="flex flex-1 flex-col gap-4 p-8 pt-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-bold text-muted-foreground text-2xl">Time</h1>
+          <h1 className="text-bold text-muted-foreground text-2xl">Times</h1>
           <Button asChild className="flex gap-2">
             <Link href="/create-team">
               <Plus className="w-4 h-4" />
@@ -69,37 +70,46 @@ export default function Teams() {
             </Link>
           </Button>
         </div>
-        <Table className="border">
-          <TableCaption>Lista de times</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Nome</TableHead>
-              <TableHead>Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {teams.map((team) => (
-              <TableRow key={team.id}>
-                <TableCell>{team.id}</TableCell>
-                <TableCell>{team.name}</TableCell>
-                <TableCell>
-                  <div className="flex gap-4 justify-end">
-                    <Button variant="ghost">
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={() => handleDeleteTeam(team.id)}
-                      variant="ghost"
-                    >
-                      <Trash2 className="w-4 h-4 text-red-500" />
-                    </Button>
-                  </div>
-                </TableCell>
+
+        {teams.length === 0 ? (
+          <div className="flex items-center justify-center">
+            <LoadingIndicator className="w-10 h-10" />
+          </div>
+        ) : (
+          <Table className="border">
+            <TableCaption>Lista de times</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>ID</TableHead>
+                <TableHead>Nome</TableHead>
+                <TableHead className="pl-10">Ações</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {teams.map((team) => (
+                <TableRow key={team.id}>
+                  <TableCell>{team.id}</TableCell>
+                  <TableCell>{team.name}</TableCell>
+                  <TableCell>
+                    <div className="flex">
+                      <Button variant="ghost" asChild>
+                        <Link href={`/teams/edit/${team.id}`} passHref>
+                          <Pencil className="w-4 h-4" />
+                        </Link>
+                      </Button>
+                      <Button
+                        onClick={() => handleDeleteTeam(team.id)}
+                        variant="ghost"
+                      >
+                        <Trash2 className="w-4 h-4 text-red-500" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
       <Toaster />
     </div>

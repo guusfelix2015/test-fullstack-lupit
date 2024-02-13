@@ -10,7 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Toaster, toast } from "sonner";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Plus } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -80,28 +80,36 @@ export default function CreatePlayer() {
     <div className="flex min-h-screen flex-col antialiased">
       <Header />
       <div className="flex flex-1 flex-col gap-4 p-8 pt-6 items-center">
-        <Link className="self-start flex items-center gap-2" href="/teams">
+        <Link className="self-start flex items-center gap-2" href="/">
           <ChevronLeft className="w-4 h-4" />
           Voltar
         </Link>
         <h1 className="text-bold text-muted-foreground text-2xl">
           Inserir jogador
         </h1>
-        <div className="flex w-[350px] flex-col justify-center gap-6 border p-6">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Nome do jogador</Label>
-              <Input
-                id="name"
-                type="text"
-                {...register("name")}
-                placeholder="Digite o nome do jogador"
-              />
-              <FormError errors={errors} fieldName="name" />
-            </div>
-            {!teams ? (
-              <h1>Nenhum time criado, crie um time para associar um jogador</h1>
-            ) : (
+        {teams.length === 0 ? (
+          <>
+            <h1>Nenhum time criado, crie um time para associar um jogador</h1>
+            <Button asChild className="flex gap-2">
+              <Link href="/create-team">
+                <Plus className="w-4 h-4" />
+                Adicionar time
+              </Link>
+            </Button>
+          </>
+        ) : (
+          <div className="flex w-[350px] flex-col justify-center gap-6 border p-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Nome do jogador</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  {...register("name")}
+                  placeholder="Digite o nome do jogador"
+                />
+                <FormError errors={errors} fieldName="name" />
+              </div>
               <Controller
                 name="teamId"
                 control={control}
@@ -124,20 +132,20 @@ export default function CreatePlayer() {
                   </Select>
                 )}
               />
-            )}
 
-            <FormError errors={errors} fieldName="teamId" />
-            <div className="flex items-end w-full justify-end">
-              <Button
-                disabled={isSubmitting}
-                className="w-[100px]"
-                type="submit"
-              >
-                Criar
-              </Button>
-            </div>
-          </form>
-        </div>
+              <FormError errors={errors} fieldName="teamId" />
+              <div className="flex items-end w-full justify-end">
+                <Button
+                  disabled={isSubmitting}
+                  className="w-[100px]"
+                  type="submit"
+                >
+                  Criar
+                </Button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
       <Toaster />
     </div>

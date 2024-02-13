@@ -14,8 +14,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2, UserRoundX } from "lucide-react";
 import Link from "next/link";
+import { LoadingIndicator } from "@/components/loading-indicator";
 
 const getPlayers = async (): Promise<Player[]> => {
   const response = await fetch("http://localhost:3000/player");
@@ -57,49 +58,57 @@ export default function Home() {
             </Link>
           </Button>
         </div>
-        <Table className="border">
-          <TableCaption>Lista de Jogadores</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Nome</TableHead>
-              <TableHead>Time</TableHead>
-              <TableHead>Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {players.map((player) => (
-              <TableRow key={player.id}>
-                <TableCell>{player.id}</TableCell>
-                <TableCell>{player.name}</TableCell>
-                <TableCell>{player.team.name}</TableCell>
-                <div className="flex">
-                  <Button variant="ghost">
-                    <Pencil className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          "Tem certeza que deseja deletar este jogador?"
-                        )
-                      ) {
-                        handleDeletePlayer(player.id).then(() => {
-                          setPlayers((currentPlayer) =>
-                            currentPlayer.filter((p) => p.id !== player.id)
-                          );
-                        });
-                      }
-                    }}
-                    variant="ghost"
-                  >
-                    <Trash2 className="w-4 h-4 text-red-500" />
-                  </Button>
-                </div>
+        {players.length === 0 ? (
+          <div className="flex items-center justify-center">
+            <LoadingIndicator className="w-10 h-10" />
+          </div>
+        ) : (
+          <Table className="border">
+            <TableCaption>Lista de Jogadores</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>ID</TableHead>
+                <TableHead>Nome</TableHead>
+                <TableHead>Time</TableHead>
+                <TableHead>Ações</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {players.map((player) => (
+                <TableRow key={player.id}>
+                  <TableCell>{player.id}</TableCell>
+                  <TableCell>{player.name}</TableCell>
+                  <TableCell>{player.team.name}</TableCell>
+                  <div className="flex">
+                    <Button asChild variant="ghost">
+                      <Link href={`/player/${player.id}`} passHref>
+                        <Pencil className="w-4 h-4" />
+                      </Link>
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Tem certeza que deseja deletar este jogador?"
+                          )
+                        ) {
+                          handleDeletePlayer(player.id).then(() => {
+                            setPlayers((currentPlayer) =>
+                              currentPlayer.filter((p) => p.id !== player.id)
+                            );
+                          });
+                        }
+                      }}
+                      variant="ghost"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </Button>
+                  </div>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
       <Toaster />
     </div>
