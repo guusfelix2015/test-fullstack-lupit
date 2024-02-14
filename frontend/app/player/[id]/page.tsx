@@ -26,6 +26,7 @@ export const schema = z.object({
     .string({ required_error: "Informe o nome do time" })
     .min(3, "Nome do time deve conter no mínimo 3 caracteres"),
   teamId: z.number().nullable(),
+  age: z.coerce.number(),
 });
 
 type FormSchema = z.infer<typeof schema>;
@@ -109,6 +110,16 @@ export default function EditPlayer({
                 placeholder="Digite o nome do time"
               />
               <FormError errors={errors} fieldName="name" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="age">Idade do jogador</Label>
+              <Input
+                id="age"
+                type="text"
+                {...register("age")}
+                placeholder="Digite a idade do jogador"
+              />
+              <FormError errors={errors} fieldName="age" />
             </div>
             {teams.length === 0 ? (
               <h1>Esse jogador não tem time associado</h1>

@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Plus, Trash2, UserRoundX } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 const getPlayers = async (): Promise<Player[]> => {
@@ -68,6 +68,7 @@ export default function Home() {
               <TableRow>
                 <TableHead>ID</TableHead>
                 <TableHead>Nome</TableHead>
+                <TableHead>idade</TableHead>
                 <TableHead>Time</TableHead>
                 <TableHead>Ações</TableHead>
               </TableRow>
@@ -76,6 +77,7 @@ export default function Home() {
               {players.map((player) => (
                 <TableRow key={player.id}>
                   <TableCell>{player.id}</TableCell>
+                  <TableCell>{player.age}</TableCell>
                   <TableCell>{player.name}</TableCell>
                   <TableCell>{player?.team?.name ?? "Sem time"}</TableCell>
                   <div className="flex">

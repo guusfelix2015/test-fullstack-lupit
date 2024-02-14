@@ -29,6 +29,8 @@ const getTeams = async (): Promise<Team[]> => {
   return await response.json();
 };
 
+
+
 export const schema = z.object({
   name: z
     .string({ required_error: "Informe o nome do jogador" })
@@ -36,6 +38,7 @@ export const schema = z.object({
   teamId: z
     .number({ required_error: "Selecione um time" })
     .transform((val) => Number(val)),
+  age: z.coerce.number(),
 });
 
 type FormSchema = z.infer<typeof schema>;
@@ -56,13 +59,21 @@ export default function CreatePlayer() {
   } = useForm<FormSchema>({ resolver: zodResolver(schema), mode: "onBlur" });
 
   const onSubmit = async (data: FormSchema) => {
+    console.log("Data before processing:", data);
+    const processedData = {
+      ...data,
+      age: Number(data.age),
+      teamId: Number(data.teamId),
+    };
+    console.log("Processed data:", processedData);
+
     try {
       const response = await fetch("http://localhost:3000/player", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(processedData),
       });
 
       if (!response.ok) {
@@ -109,6 +120,16 @@ export default function CreatePlayer() {
                   placeholder="Digite o nome do jogador"
                 />
                 <FormError errors={errors} fieldName="name" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="age">Idade do jogador</Label>
+                <Input
+                  id="age"
+                  type="number"
+                  {...register("age")}
+                  placeholder="Digite a idade do jogador"
+                />
+                <FormError errors={errors} fieldName="age" />
               </div>
               <Controller
                 name="teamId"
