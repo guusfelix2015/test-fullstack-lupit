@@ -22,6 +22,7 @@ model Team {
 model Player {
   id        String   @id @default(uuid())
   name      String
+  age       Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   teamId    Int?

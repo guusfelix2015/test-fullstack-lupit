@@ -12,6 +12,7 @@ export class PlayerService {
       data: {
         name: data.name,
         teamId: data.teamId,
+        age: data.age,
       },
     });
   }
