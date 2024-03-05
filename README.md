@@ -33,7 +33,7 @@ Sendo que o projeto de frontend ficará dentro da pasta de frontend e o projeto 
   * banco de dados
 * Uso de algum ORM (Prisma, TypeORM, Sequelize, etc...)
 
-### Como Rodar o Teste:
+### Como Rodar os projetos:
 
 **API:**
 
