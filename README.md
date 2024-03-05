@@ -37,13 +37,13 @@ Sendo que o projeto de frontend ficará dentro da pasta de frontend e o projeto 
 
 **API:**
 
-- Rode o comando:
+- Rode o comando: docker compose up -d
 
 Isso irá iniciar o banco de dados e a API em um container.
 
 **Front-end:**
 
-- Rode o comando:
+- Rode o comando: yarn dev
 
 Pronto, agora você pode testar tudo.
 
