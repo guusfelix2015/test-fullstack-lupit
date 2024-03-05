@@ -32,3 +32,18 @@ Sendo que o projeto de frontend ficará dentro da pasta de frontend e o projeto 
   * frontend
   * banco de dados
 * Uso de algum ORM (Prisma, TypeORM, Sequelize, etc...)
+
+### Como Rodar o Teste:
+
+**API:**
+
+- Rode o comando:
+
+Isso irá iniciar o banco de dados e a API em um container.
+
+**Front-end:**
+
+- Rode o comando:
+
+Pronto, agora você pode testar tudo.
+
